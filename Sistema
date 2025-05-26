@@ -1,0 +1,103 @@
+saldo = 0
+extrato = ""
+numeros_saques = 0
+limite_saques = 3
+
+def menu_principal():
+    return int(input(
+        """\n ---Olá, Bem-Vindo!---
+Qual será a atividade realizada hoje?
+
+[1]Depósito
+
+[2]Saque
+
+[3]Extrato
+
+[0]Sair
+
+
+Escolha uma opção: """))
+
+
+def opcao_deposito(saldo, extrato):
+    print("---Depósito---")
+
+    while True:
+        valor = float(input("Qual o valor a ser depositado?"))
+
+        if valor > 0:
+            saldo += valor
+            extrato += f"Depósito realizado de {valor:.2f}\n"
+            print(f"Depósito de {valor:.2f} realizado com sucesso")
+            break
+
+        else:
+            tentar = input(
+                """Valor inválido, deseja tentar novamente?
+[1]Sim
+[0]Voltar ao menu
+\n""")
+
+            if tentar == "0" or tentar != "1":
+                break
+            
+    return saldo, extrato
+
+
+
+
+def opcao_saque(saldo, extrato, numeros_saques):
+    print("---Saque---")
+    if limite_saques > numeros_saques:
+        while True:
+            valor = float(input("Qual o valor que irá sacar?\n"))
+
+            if valor < saldo:
+                saldo -= valor
+                extrato += f"Saque Realizado no valor de {valor:.2f}\n"
+                numeros_saques += 1
+                print(f"Saque de {valor:.2f} realizado com sucesso\n")
+                break
+            
+            else:
+                tentar = input(
+                    """Valor inválido, deseja tentar novamente?
+[1]Sim
+[0]Voltar ao menu
+\n""")            
+                if tentar == "0" or tentar != "1":
+                    break
+
+    else:
+        print("Limite diário de saques atingido!")
+
+    return saldo, extrato, numeros_saques
+    
+def opcao_extrato(extrato):
+    print("---Extrato---")
+    if extrato:
+        print(extrato)
+    else:
+        print("Não há extrato disponível.")
+    
+
+
+while True:
+    opcao = menu_principal()
+
+    if opcao == 1:
+        saldo, extrato = opcao_deposito(saldo, extrato)
+    
+    elif opcao == 2:
+        saldo, extrato, numeros_saques = opcao_saque (saldo, extrato, numeros_saques)
+
+    elif opcao == 3:
+         opcao_extrato(extrato)
+
+    elif opcao == 0:
+        print("Saindo...")
+        break
+    
+    else:
+        print("Operação inválida, por favor selecione novamente.")
